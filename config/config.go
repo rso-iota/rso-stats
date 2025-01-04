@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-	NatsURL  string `env:"NATS_URL"`
-	LogJSON  bool   `env:"LOG_JSON"`
-	RedisURL string `env:"REDIS_URL"`
+	NatsURL    string `env:"NATS_URL"`
+	LogJSON    bool   `env:"LOG_JSON"`
+	RedisURL   string `env:"REDIS_URL"`
+	GrapQLPort string `env:"GRAPHQL_PORT"`
 }
 
 func Init() Config {
