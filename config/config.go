@@ -9,8 +9,9 @@ import (
 )
 
 type Config struct {
-	NatsURL string `env:"NATS_URL"`
-	LogJSON bool   `env:"LOG_JSON"`
+	NatsURL  string `env:"NATS_URL"`
+	LogJSON  bool   `env:"LOG_JSON"`
+	RedisURL string `env:"REDIS_URL"`
 }
 
 func Init() Config {
