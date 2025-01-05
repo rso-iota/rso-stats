@@ -5,6 +5,7 @@ import (
 	"rso-stats/config"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/redis/go-redis/v9"
@@ -16,6 +17,8 @@ func Init(conf config.Config, redisClient *redis.Client) {
 
 	srv.AddTransport(&transport.POST{})
 	srv.AddTransport(&transport.GET{})
+
+	srv.Use(extension.Introspection{})
 
 	http.Handle("/api/stats/public/playground", playground.Handler("GraphQL playground", "/api/stats/public/query"))
 	http.Handle("/api/stats/public/query", srv)
