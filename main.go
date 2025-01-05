@@ -10,7 +10,7 @@ import (
 func main() {
 	config := config.Init()
 
-	redis := db.Init(config)
+	redis := db.Init(config.RedisURL)
 	go graph.Init(config, redis)
 
 	stats.Start(config)
