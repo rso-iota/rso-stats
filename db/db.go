@@ -44,6 +44,11 @@ func IncrementDeaths(playerId string) {
 	if err != nil {
 		log.WithError(err).Error("Failed to increment deaths")
 	}
+
+	err = client.Incr(ctx, "total_deaths").Err()
+	if err != nil {
+		log.WithError(err).Error("Failed to increment total_deaths")
+	}
 }
 
 func IncrementKills(playerId string) {
@@ -55,5 +60,26 @@ func IncrementKills(playerId string) {
 	err = client.Incr(ctx, "total_kills").Err()
 	if err != nil {
 		log.WithError(err).Error("Failed to increment total_kills")
+	}
+}
+
+func IncrementBotKills() {
+	err := client.Incr(ctx, "total_bot_kills").Err()
+	if err != nil {
+		log.WithError(err).Error("Failed to increment total_bot_kills")
+	}
+}
+
+func IncrementBotDeaths() {
+	err := client.Incr(ctx, "total_bot_deaths").Err()
+	if err != nil {
+		log.WithError(err).Error("Failed to increment total_bot_deaths")
+	}
+}
+
+func IncrementBotFood() {
+	err := client.Incr(ctx, "total_bot_food").Err()
+	if err != nil {
+		log.WithError(err).Error("Failed to increment total_bot_food")
 	}
 }

@@ -7,38 +7,7 @@ package graph
 import (
 	"context"
 	"rso-stats/graph/model"
-
-	"github.com/redis/go-redis/v9"
-	log "github.com/sirupsen/logrus"
 )
-
-func playerData(ctx context.Context, client *redis.Client, id string) *model.Player {
-	foodEaten, err := client.Get(ctx, id+":food").Int()
-	if err != nil {
-		log.WithError(err).Error("Failed to get food")
-		foodEaten = 0
-	}
-
-	deaths, err := client.Get(ctx, id+":deaths").Int()
-	if err != nil {
-		log.WithError(err).Error("Failed to get deaths")
-		deaths = 0
-	}
-
-	kills, err := client.Get(ctx, id+":kills").Int()
-	if err != nil {
-		log.WithError(err).Error("Failed to get kills")
-		kills = 0
-	}
-
-	player := model.Player{
-		FoodEaten: int32(foodEaten),
-		Deaths:    int32(deaths),
-		Kills:     int32(kills),
-	}
-
-	return &player
-}
 
 // Player is the resolver for the player field.
 func (r *queryResolver) Player(ctx context.Context, id string) (*model.Player, error) {
@@ -58,21 +27,20 @@ func (r *queryResolver) Players(ctx context.Context, ids []*string) ([]*model.Pl
 
 // Stats is the resolver for the stats field.
 func (r *queryResolver) Stats(ctx context.Context) (*model.GlobalStats, error) {
-	totalFood, err := r.RedisClient.Get(ctx, "total_food").Int()
-	if err != nil {
-		log.WithError(err).Error("Failed to get total_food")
-		totalFood = 0
-	}
-
-	totalKills, err := r.RedisClient.Get(ctx, "total_kills").Int()
-	if err != nil {
-		log.WithError(err).Error("Failed to get total_kills")
-		totalKills = 0
-	}
+	totalPlayerFood := getOrZero(r.RedisClient, ctx, "total_food")
+	totalPlayerKills := getOrZero(r.RedisClient, ctx, "total_kills")
+	totalPlayerDeaths := getOrZero(r.RedisClient, ctx, "total_deaths")
+	totalBotFood := getOrZero(r.RedisClient, ctx, "total_bot_food")
+	totalBotKills := getOrZero(r.RedisClient, ctx, "total_bot_kills")
+	totalBotDeaths := getOrZero(r.RedisClient, ctx, "total_bot_deaths")
 
 	stats := model.GlobalStats{
-		FoodEaten: int32(totalFood),
-		Kills:     int32(totalKills),
+		PlayerFoodEaten: int32(totalPlayerFood),
+		PlayerKills:     int32(totalPlayerKills),
+		PlayerDeaths:    int32(totalPlayerDeaths),
+		BotFoodEaten:    int32(totalBotFood),
+		BotKills:        int32(totalBotKills),
+		BotDeaths:       int32(totalBotDeaths),
 	}
 
 	return &stats, nil

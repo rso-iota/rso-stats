@@ -9,8 +9,12 @@ type Player {
 }
 
 type GlobalStats {
-  foodEaten: Int!
-  kills: Int!
+  playerFoodEaten: Int!
+  playerKills: Int!
+  playerDeaths: Int!
+  botFoodEaten: Int!
+  botKills: Int!
+  botDeaths: Int!
 }
 
 type Query {

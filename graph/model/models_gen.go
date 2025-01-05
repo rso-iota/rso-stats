@@ -3,8 +3,12 @@
 package model
 
 type GlobalStats struct {
-	FoodEaten int32 `json:"foodEaten"`
-	Kills     int32 `json:"kills"`
+	PlayerFoodEaten int32 `json:"playerFoodEaten"`
+	PlayerKills     int32 `json:"playerKills"`
+	PlayerDeaths    int32 `json:"playerDeaths"`
+	BotFoodEaten    int32 `json:"botFoodEaten"`
+	BotKills        int32 `json:"botKills"`
+	BotDeaths       int32 `json:"botDeaths"`
 }
 
 type Player struct {

@@ -47,8 +47,12 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	GlobalStats struct {
-		FoodEaten func(childComplexity int) int
-		Kills     func(childComplexity int) int
+		BotDeaths       func(childComplexity int) int
+		BotFoodEaten    func(childComplexity int) int
+		BotKills        func(childComplexity int) int
+		PlayerDeaths    func(childComplexity int) int
+		PlayerFoodEaten func(childComplexity int) int
+		PlayerKills     func(childComplexity int) int
 	}
 
 	Player struct {
@@ -89,19 +93,47 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "GlobalStats.foodEaten":
-		if e.complexity.GlobalStats.FoodEaten == nil {
+	case "GlobalStats.botDeaths":
+		if e.complexity.GlobalStats.BotDeaths == nil {
 			break
 		}
 
-		return e.complexity.GlobalStats.FoodEaten(childComplexity), true
+		return e.complexity.GlobalStats.BotDeaths(childComplexity), true
 
-	case "GlobalStats.kills":
-		if e.complexity.GlobalStats.Kills == nil {
+	case "GlobalStats.botFoodEaten":
+		if e.complexity.GlobalStats.BotFoodEaten == nil {
 			break
 		}
 
-		return e.complexity.GlobalStats.Kills(childComplexity), true
+		return e.complexity.GlobalStats.BotFoodEaten(childComplexity), true
+
+	case "GlobalStats.botKills":
+		if e.complexity.GlobalStats.BotKills == nil {
+			break
+		}
+
+		return e.complexity.GlobalStats.BotKills(childComplexity), true
+
+	case "GlobalStats.playerDeaths":
+		if e.complexity.GlobalStats.PlayerDeaths == nil {
+			break
+		}
+
+		return e.complexity.GlobalStats.PlayerDeaths(childComplexity), true
+
+	case "GlobalStats.playerFoodEaten":
+		if e.complexity.GlobalStats.PlayerFoodEaten == nil {
+			break
+		}
+
+		return e.complexity.GlobalStats.PlayerFoodEaten(childComplexity), true
+
+	case "GlobalStats.playerKills":
+		if e.complexity.GlobalStats.PlayerKills == nil {
+			break
+		}
+
+		return e.complexity.GlobalStats.PlayerKills(childComplexity), true
 
 	case "Player.deaths":
 		if e.complexity.Player.Deaths == nil {
@@ -386,8 +418,8 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _GlobalStats_foodEaten(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_GlobalStats_foodEaten(ctx, field)
+func (ec *executionContext) _GlobalStats_playerFoodEaten(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_playerFoodEaten(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -400,7 +432,7 @@ func (ec *executionContext) _GlobalStats_foodEaten(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.FoodEaten, nil
+		return obj.PlayerFoodEaten, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -417,7 +449,7 @@ func (ec *executionContext) _GlobalStats_foodEaten(ctx context.Context, field gr
 	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_GlobalStats_foodEaten(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_GlobalStats_playerFoodEaten(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "GlobalStats",
 		Field:      field,
@@ -430,8 +462,8 @@ func (ec *executionContext) fieldContext_GlobalStats_foodEaten(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _GlobalStats_kills(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_GlobalStats_kills(ctx, field)
+func (ec *executionContext) _GlobalStats_playerKills(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_playerKills(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -444,7 +476,7 @@ func (ec *executionContext) _GlobalStats_kills(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Kills, nil
+		return obj.PlayerKills, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -461,7 +493,183 @@ func (ec *executionContext) _GlobalStats_kills(ctx context.Context, field graphq
 	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_GlobalStats_kills(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_GlobalStats_playerKills(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GlobalStats",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GlobalStats_playerDeaths(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_playerDeaths(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PlayerDeaths, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GlobalStats_playerDeaths(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GlobalStats",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GlobalStats_botFoodEaten(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_botFoodEaten(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BotFoodEaten, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GlobalStats_botFoodEaten(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GlobalStats",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GlobalStats_botKills(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_botKills(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BotKills, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GlobalStats_botKills(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GlobalStats",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GlobalStats_botDeaths(ctx context.Context, field graphql.CollectedField, obj *model.GlobalStats) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GlobalStats_botDeaths(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BotDeaths, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GlobalStats_botDeaths(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "GlobalStats",
 		Field:      field,
@@ -762,10 +970,18 @@ func (ec *executionContext) fieldContext_Query_stats(_ context.Context, field gr
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "foodEaten":
-				return ec.fieldContext_GlobalStats_foodEaten(ctx, field)
-			case "kills":
-				return ec.fieldContext_GlobalStats_kills(ctx, field)
+			case "playerFoodEaten":
+				return ec.fieldContext_GlobalStats_playerFoodEaten(ctx, field)
+			case "playerKills":
+				return ec.fieldContext_GlobalStats_playerKills(ctx, field)
+			case "playerDeaths":
+				return ec.fieldContext_GlobalStats_playerDeaths(ctx, field)
+			case "botFoodEaten":
+				return ec.fieldContext_GlobalStats_botFoodEaten(ctx, field)
+			case "botKills":
+				return ec.fieldContext_GlobalStats_botKills(ctx, field)
+			case "botDeaths":
+				return ec.fieldContext_GlobalStats_botDeaths(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type GlobalStats", field.Name)
 		},
@@ -2694,13 +2910,33 @@ func (ec *executionContext) _GlobalStats(ctx context.Context, sel ast.SelectionS
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("GlobalStats")
-		case "foodEaten":
-			out.Values[i] = ec._GlobalStats_foodEaten(ctx, field, obj)
+		case "playerFoodEaten":
+			out.Values[i] = ec._GlobalStats_playerFoodEaten(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "kills":
-			out.Values[i] = ec._GlobalStats_kills(ctx, field, obj)
+		case "playerKills":
+			out.Values[i] = ec._GlobalStats_playerKills(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "playerDeaths":
+			out.Values[i] = ec._GlobalStats_playerDeaths(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "botFoodEaten":
+			out.Values[i] = ec._GlobalStats_botFoodEaten(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "botKills":
+			out.Values[i] = ec._GlobalStats_botKills(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "botDeaths":
+			out.Values[i] = ec._GlobalStats_botDeaths(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
