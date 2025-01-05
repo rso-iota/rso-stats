@@ -31,12 +31,12 @@ func Init() Config {
 		fields[val.Type().Field(i).Name] = val.Field(i).Interface()
 	}
 
-	log.WithFields(fields).Info("Loaded config")
-
 	if config.LogJSON {
 		log.SetFormatter(&log.JSONFormatter{})
 	}
 	log.SetLevel(log.DebugLevel)
+
+	log.WithFields(fields).Info("Loaded config")
 
 	return config
 }

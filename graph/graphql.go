@@ -15,9 +15,10 @@ func Init(conf config.Config, redisClient *redis.Client) {
 	srv := handler.New(NewExecutableSchema(Config{Resolvers: &Resolver{RedisClient: redisClient}}))
 
 	srv.AddTransport(&transport.POST{})
+	srv.AddTransport(&transport.GET{})
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	http.Handle("/api/stats/public/playground", playground.Handler("GraphQL playground", "/api/stats/query"))
+	http.Handle("/api/stats/query", srv)
 
 	log.Info("GraphQL server running on port ", conf.GrapQLPort)
 	log.Fatal(http.ListenAndServe(":"+conf.GrapQLPort, nil))
