@@ -6,34 +6,28 @@ package graph
 
 import (
 	"context"
-	"rso-stats/db"
 	"rso-stats/graph/model"
 
 	"github.com/redis/go-redis/v9"
+	log "github.com/sirupsen/logrus"
 )
 
 func playerData(ctx context.Context, client *redis.Client, id string) *model.Player {
 	foodEaten, err := client.Get(ctx, id+":food").Int()
 	if err != nil {
-		if err != redis.Nil {
-			db.DbError("Failed to get food", err)
-		}
+		log.WithError(err).Error("Failed to get food")
 		foodEaten = 0
 	}
 
 	deaths, err := client.Get(ctx, id+":deaths").Int()
 	if err != nil {
-		if err != redis.Nil {
-			db.DbError("Failed to get deaths", err)
-		}
+		log.WithError(err).Error("Failed to get deaths")
 		deaths = 0
 	}
 
 	kills, err := client.Get(ctx, id+":kills").Int()
 	if err != nil {
-		if err != redis.Nil {
-			db.DbError("Failed to get kills", err)
-		}
+		log.WithError(err).Error("Failed to get kills")
 		kills = 0
 	}
 
@@ -66,17 +60,13 @@ func (r *queryResolver) Players(ctx context.Context, ids []*string) ([]*model.Pl
 func (r *queryResolver) Stats(ctx context.Context) (*model.GlobalStats, error) {
 	totalFood, err := r.RedisClient.Get(ctx, "total_food").Int()
 	if err != nil {
-		if err != redis.Nil {
-			db.DbError("Failed to get total_food", err)
-		}
+		log.WithError(err).Error("Failed to get total_food")
 		totalFood = 0
 	}
 
 	totalKills, err := r.RedisClient.Get(ctx, "total_kills").Int()
 	if err != nil {
-		if err != redis.Nil {
-			db.DbError("Failed to get total_kills", err)
-		}
+		log.WithError(err).Error("Failed to get total_kills")
 		totalKills = 0
 	}
 
